@@ -1,0 +1,28 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  mat-card {
+    max-width: 600px; /* Set your desired maximum width */
+    width: 600px;
+  }
+  
+  .form-container {
+    width: 100%;
+  }
+  
+  .form-field {
+    margin-bottom: 16px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  button {
+    margin-top: 16px;
+  }
+  

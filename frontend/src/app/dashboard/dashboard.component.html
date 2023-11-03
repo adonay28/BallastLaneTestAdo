@@ -1,0 +1,84 @@
+<mat-toolbar color="primary" class="mat-toolbar-single-row">
+    <span>Dashboard</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/dashboard" (click)="refresh()">Home</button>
+  
+    <ng-container *ngIf="hasRole('ROLE_student')">
+        <button mat-button routerLink="/dashboard/timesheet">TimeSheet</button>
+    </ng-container>
+    
+    <ng-container *ngIf="hasRole('ROLE_admin')">
+        <button mat-button routerLink="/dashboard/courses">Courses</button>
+    </ng-container>
+
+    <button mat-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon> Logout
+    </button>
+    <!-- Add more buttons for additional options -->
+  </mat-toolbar>
+  
+  <div class="dashboard-content">
+    <!-- Your dashboard content goes here -->
+    <div *ngIf="hasRole('ROLE_student') && !isTimesheetRoute()">
+        <div class="courses-table">
+            <h2>Available Courses</h2>
+            <table mat-table [dataSource]="availableCourses">
+        
+              <!-- Course Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let course">
+                  <button mat-button color="primary" (click)="openRegistrationDialog(course)">
+                    Start/Register
+                  </button>
+                </td>
+              </ng-container>
+        
+              <!-- Add more columns as needed -->
+        
+              <!-- Table Rows -->
+                <tr mat-header-row *matHeaderRowDef="['name', 'actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['name', 'actions']"></tr>
+        
+            </table>
+          </div>
+        
+          <div class="courses-table">
+            <h2>Current Courses</h2>
+            <table mat-table [dataSource]="currentCourses">
+        
+              <!-- Course Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef>Time</th>
+                <td mat-cell *matCellDef="let course">{{ course.time }} mins</td>
+              </ng-container>
+        
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let course">
+                  <button mat-button color="primary" (click)="openLogTimeDialog(course)">
+                    Log time
+                  </button>
+                </td>
+              </ng-container>
+              <!-- Add more columns as needed -->
+        
+              <!-- Table Rows -->
+              <tr mat-header-row *matHeaderRowDef="['name', 'time', 'actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['name', 'time', 'actions']"></tr>
+        
+            </table>
+            </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>

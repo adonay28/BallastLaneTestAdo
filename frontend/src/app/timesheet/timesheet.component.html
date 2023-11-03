@@ -1,0 +1,45 @@
+<div>
+    <mat-form-field>
+        <mat-label>Select Course</mat-label>
+        <mat-select [(ngModel)]="selectedCourse" required>
+          <mat-option disabled selected>Select Course</mat-option>
+          <mat-option *ngFor="let course of courses" [value]="course">
+            {{ course.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+    <button mat-raised-button color="primary" (click)="fetchTimesheet()">Fetch Timesheet</button>
+  </div>
+  
+  <div *ngIf="timesheetData">
+    <table mat-table [dataSource]="timesheetData">
+      <!-- Define your table columns and rows here -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let entry">{{ entry.date }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="taskCategory">
+        <th mat-header-cell *matHeaderCellDef>Task Category</th>
+        <td mat-cell *matCellDef="let entry">{{ entry.taskCategory }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="taskDescription">
+        <th mat-header-cell *matHeaderCellDef>Task Description</th>
+        <td mat-cell *matCellDef="let entry">{{ entry.taskDescription }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let entry">
+          <button mat-icon-button (click)="deleteTimesheetEntry(entry.id)">
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="['date', 'taskCategory', 'taskDescription', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['date', 'taskCategory', 'taskDescription', 'actions']"></tr>
+    </table>
+  </div>
